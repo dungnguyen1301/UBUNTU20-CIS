@@ -54,9 +54,10 @@
         failed_when: false
 
       - name: "AUTOMATED | 1.5.3 | PATCH | Ensure prelink is not installed| Remove prelink package"
-        apt:
+        package:
             name: prelink
             state: absent
+        when: "'prelink' not in ansible_facts.packages"
   when:
       - ubtu20cis_rule_1_5_3
   tags:

@@ -1,6 +1,7 @@
 ---
+
 - name: "PRELIM | Run apt update"
-  apt:
+  package:
       update_cache: yes
   when:
       - ubtu20cis_rule_1_3_1 or
@@ -27,20 +28,22 @@
       - skip_ansible_lint
 
 - name: "PRELIM | Install Network-Manager"
-  apt:
+  package:
       name: network-manager
       state: present
   when:
       - ubtu20cis_rule_3_1_2
       - not ubtu20cis_system_is_container
+      - "'network-manager' not in ansible_facts.packages"
 
 - name: "PRELIM | Install ACL"
-  apt:
+  package:
       name: acl
       state: present
   when:
       - ubtu20cis_rule_6_2_6
       - ubtu20cis_install_network_manager
+      - "'acl' not in ansible_facts.packages"
 
 - name: "PRELIM | List users accounts"
   command: "awk -F: '{print $1}' /etc/passwd"

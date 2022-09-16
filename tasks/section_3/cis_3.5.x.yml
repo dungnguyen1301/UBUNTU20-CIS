@@ -1,11 +1,12 @@
 ---
 - name: "AUTOMATED | 3.5.1.1 | PATCH | Ensure ufw is installed"
-  apt:
+  package:
       name: ufw
       state: present
   when:
       - ubtu20cis_rule_3_5_1_1
       - ubtu20cis_firewall_package == "ufw"
+      - "'ufw' not in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -16,12 +17,13 @@
       - ufw
 
 - name: "AUTOMATED | 3.5.1.2 | PATCH | Ensure iptables-persistent is not installed with ufw"
-  apt:
+  package:
       name: iptables-persistent
       state: absent
   when:
       - ubtu20cis_rule_3_5_1_2
       - ubtu20cis_firewall_package == "ufw"
+      - "'iptables-persistent' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -181,7 +183,7 @@
 - name: "AUTOMATED | 3.5.2.1 | AUDIT | Ensure nftables is installed"
   debug:
       msg: "Warning!! NFTables is not supported in this role. Please use UFW, iptables, or manually manage nftables"
-  # apt:
+  # package:
   #     name: nftables
   #     state: present
   when:
@@ -198,7 +200,7 @@
 - name: "AUTOMATED | 3.5.2.2 | AUDIT | Ensure ufw is uninstalled or disabled with nftables"
   debug:
       msg: "Warning!! NFTables is not supported in this role. Please use UFW, iptables, or manually manage nftables"
-  # apt:
+  # package:
   #     name: ufw
   #     state: absent
   when:
@@ -400,12 +402,13 @@
       - nftables
 
 - name: "AUTOMATED | 3.5.3.1.1 | PATCH | Ensure iptables packages are installed"
-  apt:
+  package:
       name: ['iptables', 'iptables-persistent']
       state: present
   when:
       - ubtu20cis_rule_3_5_3_1_1
       - ubtu20cis_firewall_package == "iptables"
+      - "'iptables' not in ansible_facts.packages or 'iptables-persistent' not in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -415,12 +418,13 @@
       - iptables
 
 - name: "AUTOMATED | 3.5.3.1.2 | PATCH | Ensure nftables is not installed with iptables"
-  apt:
+  package:
       name: nftables
       state: absent
   when:
       - ubtu20cis_rule_3_5_3_1_2
       - ubtu20cis_firewall_package == "iptables"
+      - "'nftables' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -430,12 +434,13 @@
       - iptables
 
 - name: "AUTOMATED | 3.5.3.1.3 | PATCH | Ensure ufw is uninstalled or disabled with iptables"
-  apt:
+  package:
       name: ufw
       state: absent
   when:
       - ubtu20cis_rule_3_5_3_1_3
       - ubtu20cis_firewall_package == "iptables"
+      - "'ufw' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -598,9 +603,10 @@
 - name: "Make IPTables persistent | Not a control"
   block:
       - name: "Make IPTables persistent | Install iptables-persistent"
-        apt:
+        package:
             name: iptables-persistent
             state: present
+        when: "'iptables-persistent' not in ansible_facts.packages"
 
       - name: "Make IPTables persistent | Save to persistent files"
         shell: bash -c "iptables-save > /etc/iptables/rules.v4"
@@ -770,9 +776,10 @@
 - name: "Make IP6Tables persistent | Not a control"
   block:
       - name: "Make IP6Tables persistent | Install iptables-persistent"
-        apt:
+        package:
             name: iptables-persistent
             state: present
+        when: "'iptables-persistent' not in ansible_facts.packages"
 
       - name: "Make IP6Tables persistent | Save to persistent files"
         shell: bash -c "ip6tables-save > /etc/iptables/rules.v6"

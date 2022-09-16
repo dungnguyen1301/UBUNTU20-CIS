@@ -2,9 +2,10 @@
 - name: "AUTOMATED | 5.4.1 | PATCH | Ensure password creation requirements are configured"
   block:
       - name: "AUTOMATED | 5.4.1 | PATCH | Ensure password creation requirements are configured | Install pam_pwquality module"
-        apt:
+        package:
             name: libpam-pwquality
             state: present
+        when: "'libpam-pwquality' not in ansible_facts.packages"
 
       - name: "AUTOMATED | 5.4.1 | PATCH | Ensure password creation requirements are configured | Add minlen"
         lineinfile:

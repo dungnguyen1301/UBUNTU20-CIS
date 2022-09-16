@@ -1,10 +1,11 @@
 ---
 - name: "AUTOMATED | 4.1.1.1 | PATCH | Ensure auditd is installed"
-  apt:
+  package:
       name: ['auditd', 'audispd-plugins']
       state: present
   when:
       - ubtu20cis_rule_4_1_1_1
+      - "'auditd' not in ansible_facts.packages or 'audispd-plugins' not in ansible_facts.packages"
   tags:
       - level2-server
       - level2-workstation

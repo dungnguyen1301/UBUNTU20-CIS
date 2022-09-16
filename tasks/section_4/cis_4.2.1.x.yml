@@ -1,10 +1,11 @@
 ---
 - name: "AUTOMATED | 4.2.1.1 | PATCH | Ensure rsyslog is installed"
-  apt:
+  package:
       name: rsyslog
       state: present
   when:
       - ubtu20cis_rule_4_2_1_1
+      - "'rsyslog' not in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation

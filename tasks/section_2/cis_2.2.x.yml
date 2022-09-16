@@ -1,6 +1,6 @@
 ---
 - name: "2.2.1 | PATCH | Ensure NIS Client is not installed"
-  apt:
+  package:
       name: nis
       state: absent
   when:
@@ -13,12 +13,13 @@
       - nis
 
 - name: "AUTOMATED | 2.2.2 | PATCH | Ensure rsh client is not installed"
-  apt:
+  package:
       name: rsh-client
       state: absent
   when:
       - ubtu20cis_rule_2_2_2
       - not ubtu20cis_rsh_required
+      - "'rsh-client' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -28,12 +29,13 @@
       - rsh
 
 - name: "AUTOMATED | 2.2.3 | PATCH | Ensure talk client is not installed"
-  apt:
+  package:
       name: talk
       state: absent
   when:
       - ubtu20cis_rule_2_2_3
       - not ubtu20cis_talk_required
+      - "'talk' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -43,12 +45,13 @@
       - talk
 
 - name: "AUTOMATED | 2.2.4 | PATCH | Ensure telnet client is not installed"
-  apt:
+  package:
       name: telnet
       state: absent
   when:
       - ubtu20cis_rule_2_2_4
       - not ubtu20cis_telnet_required
+      - "'telnet' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -58,12 +61,13 @@
       - telnet
 
 - name: "AUTOMATED | 2.2.5 | PATCH | Ensure LDAP client is not installed"
-  apt:
+  package:
       name: ldap-utils
       state: absent
   when:
       - ubtu20cis_rule_2_2_5
       - not ubtu20cis_ldap_clients_required
+      - "'ldap-utils' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
@@ -73,12 +77,13 @@
       - ldap
 
 - name: "AUTOMATED | 2.2.6 | PATCH | Ensure RPC is not installed"
-  apt:
+  package:
       name: rpcbind
       state: absent
   when:
       - ubtu20cis_rule_2_2_6
       - not ubtu20cis_rpc_required
+      - "'rpcbind' in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation

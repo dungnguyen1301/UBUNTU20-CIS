@@ -1,10 +1,11 @@
 ---
 - name: "AUTOMATED | 1.6.1.1 | PATCH | Ensure AppArmor is installed"
-  apt:
+  package:
       name: ['apparmor', 'apparmor-utils']
       state: present
   when:
       - ubtu20cis_rule_1_6_1_1
+      - "'apparmor' not in ansible_facts.packages or 'apparmor-utils' not in ansible_facts.packages"
   tags:
       - level1-server
       - level1-workstation
