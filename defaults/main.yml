@@ -633,7 +633,7 @@ ubtu20cis_pass:
 # Control 5.5.4
 # ubtu120cis_bash_umask is the umask to set in the /etc/bash.bashrc and /etc/profile.
 # The value needs to be 027 or more restrictive to comply with CIS standards
-ubtu20cis_bash_umask: '027'
+ubtu20cis_bash_umask: '022'
 
 # Control 5.5.5
 # Session timeout setting file (TMOUT setting can be set in multiple files)

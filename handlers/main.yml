@@ -1,9 +1,9 @@
 ---
 
-- name: remount tmp
-  ansible.posix.mount:
-      name: /tmp
-      state: remounted
+# - name: remount tmp
+#   ansible.posix.mount:
+#       name: /tmp
+#       state: remounted
 
 - name: remount dev_shm
   ansible.posix.mount:
